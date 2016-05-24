@@ -1,0 +1,598 @@
+<html >
+  <head>
+    <title>Full player example</title>
+    <meta charset="utf-8">
+    <!-- Uncomment the following meta tag if you have issues rendering this page on an intranet or local site. -->    
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"/> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+    
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="jquerymobile-swipeupdown.js"></script>
+
+    <script type="text/javascript">
+        function init() {        
+
+				$("#myDIV").scroll(function(e){
+				   //console.log($("#myDIV").scrollTop());
+
+				});
+				
+				function ralenti(loop, tempDefile) {
+					clearInterval(boucleInterval);
+					//video.playbackRate = 1.000000000000;
+					boucleInterval = setInterval(function(){ video.currentTime = loop; console.log("LE TEMPS AU MOMENT DE LA BOUCLE : "+temps); temps = 0; }, tempDefile);
+					$("#infoScroll").text(temps +" | "+compteurScroll+ " | FPS :  " +  video.currentTime + " RATE: " + video.playbackRate);
+					clearTimeout(timer);
+					//video.playbackRate = .6;	
+					timer = setTimeout(arret, 2000);
+					
+					
+				}
+				
+				$("#bloc").bind("resize").css({
+					
+					"margin-top":(($(window).height()/2) - 200),
+					
+				});
+				
+				$(".text").bind("resize").css({
+					
+					"margin-top":($(window).height()),
+					
+				});
+				
+				/***************************************************************************
+				   ***********************************************************************
+				 ***************************************************************************/
+				
+				/******* FUNCTIONS *******/
+				
+				function animation(debutTransition, finTransition, debutBoucle, finBoucle){
+					
+					clearInterval(boucleInterval);
+					var i = debutTransition;
+
+					boucleInterval = setInterval(function(){ 
+					  //console.log("IMAGES N° : " + i);
+					  
+					  $("#bloc_animation").children('img').css({
+						  "display":"none",
+					  });
+					  
+					  if(i <= finTransition){
+						  
+						  /*$("#image_"+(i-1)).css({
+								  "display":"none",
+						  });*/
+							 
+						  $("#image_"+i).css({
+							  "display":"block",
+						  });
+						  i++;
+						  
+					  }else{
+
+						 if(i < finBoucle){
+
+							 $("#image_"+i).css({
+								  "display":"block",
+							 });
+							 i++;
+							 
+						 }else{
+							
+							playAnimation();
+							
+							if(i > finBoucle){
+								 
+								 i = debutBoucle;
+								 etat = false;
+								 etatTransition = false; 
+								 incCompteurScroll = 1;
+								 
+								 $("#scrollImage").animate({
+									"margin-top":(($(window).height())-100),
+									
+								 }, 500);
+							}
+							 
+							 $("#image_"+i).css({
+								  "display":"block",
+							 });
+							 
+							 i++;
+
+							 /* faire apparaitre le texte pour toute les animations sauf la premiere */
+							 $("#text_"+compteurScroll).stop().animate({
+								
+										"margin-top":(($(window).height()/2)-10),
+										"opacity" : 1,
+								
+							  }, 1500, "easeInOutQuart", function(){
+									
+									var positionBloc = $("#bloc").offset(); // recupere la position
+									console.log(positionBloc.top);
+		
+									/* $(".text").each(function(index, element) {
+			
+										var position = $(this).offset();
+										//console.log(positionBloc.top);
+										
+										if(position.top < positionBloc.top || (position.top > positionBloc.top+250)){
+											console.log("OKKKKKKKKKKKKKKKK");
+											$(this).stop().animate({"opacity" : 0.3},200);
+											
+										}else{
+										
+											$(this).stop().animate({"opacity" : 1},200);
+		
+										}
+										
+									}); */
+							
+							 }); //fin callback
+
+
+						 }
+
+					  }
+						
+					 // $("#infoScroll").text(debutBoucle +" | "+finBoucle+ " | NB_img :  " +  i + " nb_img_sec: " + 24);
+						
+				    }, 41.6);
+					
+					
+					//clearTimeout(timer);
+
+				}
+
+				/* Varialbe */
+				var compteurScroll = 0;
+				var incCompteurScroll = 1;
+				etatTransition = false;
+				var etat = false;
+				var timer2;
+				var etatPosition = 0;
+				
+				//var timer;
+				
+				var boucleInterval;
+				var etatTransition = false;
+				var temps = 0;
+				var interTemp;
+				
+				
+				
+			function playAnimation(){
+
+				   /* animation */
+					
+				  // $("#infoScroll").text(compteurScroll);
+				   
+				   if(compteurScroll == 1){
+					  if(etat == false && etatPosition != 1){
+						   incCompteurScroll = 0;
+						   etatPosition = 1;
+						   clearInterval(boucleInterval);
+						   etat = true;
+						   animation(0, 25, 26, 98);
+
+					  }
+				   }
+				   
+				   if(compteurScroll == 2){
+					  if(etat == false && etatPosition != 2){
+						   incCompteurScroll = 0;
+						   etatPosition = 2;
+						   clearInterval(boucleInterval);
+						   etat = true;
+						   animation(99, 123, 124, 196);
+
+					  }
+				   }
+				   
+				   if(compteurScroll == 3){
+					  if(etat == false && etatPosition != 3){
+						   incCompteurScroll = 0;
+						   etatPosition = 3;
+						   clearInterval(boucleInterval);
+						   etat = true;
+						   animation(197, 295, 124, 196);
+
+					  }
+				   }
+
+					/* /animation */
+					
+				}// playAnimation
+				
+				
+				
+				$(window).bind('mousewheel', function(event) {
+
+					$("#infoScroll").text(compteurScroll);
+
+					if (event.originalEvent.wheelDelta >= 0) {
+						console.log('Scroll up ' + compteurScroll + " | " + event.originalEvent.wheelDelta);
+						
+					}
+					else {
+						//console.log('Scroll down ' + compteurScroll + " | " + event.originalEvent.wheelDelta);
+
+						if(compteurScroll >= 0 && !etatTransition){
+
+							clearTimeout(timer2);
+							compteurScroll = compteurScroll + incCompteurScroll;
+							
+							etatTransition = true;
+							
+							$("#scrollImage").animate({
+								"margin-top":(($(window).height())),
+								
+							}, 200);
+
+							console.log('Scroll down ' + compteurScroll + " | " + event.originalEvent.wheelDelta + " | " + "#text_"+compteurScroll);
+
+							$("#text_"+(compteurScroll-1)).stop().animate({
+								
+								"margin-top":(-(($(window).height())-200)),
+								"opacity" : 0,
+								
+							}, 1000, "swing");
+
+							if(compteurScroll == 1){
+								playAnimation();
+								timer2 = setTimeout(function(){
+									$("#text_"+compteurScroll).stop().animate({
+									
+										"margin-top":(($(window).height()/2)-10),
+										"opacity" : 1,
+									
+									}, 1500, "easeInOutQuart", function(){
+									
+										var positionBloc = $("#bloc").offset(); // recupere la position
+										console.log(positionBloc.top);
+			
+										/* $(".text").each(function(index, element) {
+				
+											var position = $(this).offset();
+											//console.log(positionBloc.top);
+											
+											if(position.top < positionBloc.top || (position.top > positionBloc.top+250)){
+												console.log("OKKKKKKKKKKKKKKKK");
+												$(this).stop().animate({"opacity" : 0.3},200);
+												
+											}else{
+											
+												$(this).stop().animate({"opacity" : 1},200);
+			
+											}
+											
+										}); */
+
+									}); //fin callback
+								}, 700);	
+							}
+						}
+						
+					}
+				});
+				
+				$(document).ready(function(e) {
+
+					/* Place le texte au centre */
+					$("#bloc").css({
+					
+						"margin-top":(($(window).height()/2) - 200),
+					
+					});
+
+					
+					$("#chargement").fadeOut(300);
+					console.log("TEST");
+					
+					for(var i = 1; i<226; i++) {
+						
+						var img = new Image();
+						console.log(img + " | " + i);
+						img.src = 'jpeg/img'+i+'.jpeg';
+						img.id = "image_"+i;
+						
+						document.getElementById("bloc_animation").appendChild(img);
+				
+						if(i != 1 ){
+							
+							$("#image_"+i).css({
+								
+								"display":"none",
+								"width":"100%",
+							});
+							
+						}else{
+							
+							$("#image_"+i).css({
+								"display":"block",
+								"width":"100%",
+							});
+							
+						}
+
+					}
+					/* Place l'image au bas de la fenetre */
+					$("#scrollImage").css({
+					
+						"margin-top":(($(window).height())),
+					
+					});
+					
+					$("#scrollImage").delay(500).animate({
+						"margin-top":(($(window).height())-100),
+						
+					}, 500);
+					
+					var hauteurWin = $(window).height();
+					var largeurWin = $(window).width();
+					
+					var largeurWindivise = (largeurWin/2);
+
+					//if(largeurWin < 1024){
+						
+						$("#bloc_animation").css({
+							"height":hauteurWin,
+							"width":largeurWin,
+						});
+						
+						$("#bloc_animation").children('img').css({
+						
+							"height":($(window).height()),
+							"width":($(window).height()/0.5625),
+
+						});
+						
+						var decalageGauche = (largeurWindivise-($("#bloc_animation").children('img').width()/2));
+
+						$("#bloc_animation").children('img').css({
+							"margin-left":decalageGauche,
+							
+						});
+						
+						
+						$(document).on('swipedown', 'body', function () {
+							alert("swipedown..");
+						});
+						$(document).on('swipeup', 'body', function () {
+							alert("swipeup..");
+						});
+						
+						
+					//}
+					
+					
+					/*var positionBloc = $("#bloc").offset();
+				
+					$(".text").stop().each(function(index, element) {
+	
+						var position = $(this).offset();
+						//console.log(positionBloc.top);
+						
+						if(position.top < positionBloc.top || (position.top > positionBloc.top+250)){
+							console.log(positionBloc.top);
+							
+							$(this).stop().animate({"opacity" : 0.3},200);
+
+						}else{
+							
+							$(this).stop().animate({"opacity" : 1},200);
+							
+						}
+	
+					});*/
+					
+					
+                });
+				
+		} // fin init()
+           
+    </script>
+    
+    <style>
+	
+		/*@media screen and (max-width: 1024px) {
+			
+			#bloc_animation {
+				min-width:1024px;
+			
+			}
+			
+			#bloc_animation img {
+				position:absolute;
+				min-width:1024px;
+			
+			}
+			
+		}*/
+
+		@font-face {
+			font-family: HelveticaNeueThin;
+			src: url('font/HelveticaNeueLTStd-Th.otf');
+		}
+	
+	
+	   body {
+			top: 0;
+			border: none;
+			margin: 0;
+			overflow: hidden !important;
+			overflow-x: hidden !important;
+			overflow-y: hidden !important;
+	   }
+	
+	   #infoScroll {
+			width: 500px;
+			height: 50px;
+			background: black;
+			color: red;
+			right: 0;
+			position: absolute;
+			top: 0;
+			font-size: 34px;
+			font-family: arial;
+			font-weight: bold;
+			z-index:99999;
+		   
+	   }
+	
+	   #Video1 {
+			border: 0px solid blue;
+			position: fixed;
+			margin: 0;
+			top: 0;
+			left: 0;
+			z-index: -1;
+		}	
+
+	  div#myDIV {
+			width: 100%;
+			height: 100%;
+			overflow:hidden;
+			position: absolute;
+			top: 0;
+			left: 0;
+			
+		}
+		
+		#bloc {
+			width: 100%;
+			max-height:250px;
+			overflow:visible;
+			height: 200px;
+			
+		}
+	
+		.text {
+			font-family:HelveticaNeueThin;
+			/*font-size:24px;*/
+			margin:0 auto;
+			position: absolute;
+   			top: 0px;
+			margin-bottom:0;
+			text-align:center;
+			max-width: 100% !important;
+			opacity: 0;
+			font-size:50px;
+		}
+		
+		#chargement {
+			background:#D20040;
+			width:100%;
+			height:100%;
+			z-index:999999999999999;
+			position:fixed;
+			top:0px; 
+			left:0px;	
+			
+		}
+		
+		#chargement p {
+			text-align:center;
+			font-size:5em;
+			font-family:arial;
+			font-weight:bold;
+			color:#ffffff;
+			
+		}
+		
+		#barreChargement {
+			height:5px;
+			width:5px;
+			background:#ffffff;
+			
+		}
+		
+		#bloc_animation {
+			position:absolute;
+			overflow:hidden;
+			
+		}
+		
+	    #bloc_animation img {
+			width:100%;
+
+		}
+	
+		#scrollImage {
+			position: absolute;
+			width: 100%;
+			top: 0;
+			z-index: 999999999999999999999;	
+			text-align: center;
+		}
+	
+	
+		.ui-page.ui-page-theme-a.ui-page-active {
+			overflow: hidden;
+		}
+	
+	</style>
+    
+    </head>
+    <body onload="init();" >        
+    
+    <div id="chargement">
+        <p></p>
+    	<div id="barreChargement"></div>
+    
+    </div>
+    
+    <!-- <div id="infoScroll">
+    	
+    </div>-->
+	
+    <div id="scrollImage">
+    	<img src="scrolldown.gif" width="150" />
+    </div>
+
+	<div id="bloc_animation">
+
+    </div>
+
+    <div id="myDIV">
+      <div id="bloc">
+        <div class="text" id="text_1" style="width:100%; max-width:1024px; color:#ffffff; ">
+        	Chaque jour votre entreprise se transforme<br/><br/>
+        </div>
+        <div class="text" id="text_2" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Elle imagine de nouvelles stratégies commerciales et relationnelles<br/><br/>
+        </div>
+        
+        <div class="text" id="text_3" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Elle réinvente son organisation<br/><br/>
+        </div>
+		<div class="text" id="text_4" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Pour vous fideliser et attirer de nouveaux talents<br/><br/>
+		</div>
+        
+        <div class="text" id="text_5" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Elle revisite son discours de marque<br/><br/>
+		</div>
+        <div class="text" id="text_6" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Elle privilégie le partage et la simplicité pour une relation plus intime<br/><br/>
+        </div>
+        
+        <div class="text" id="text_7" style="width:100%; max-width:1024px; color:#ffffff; ">
+            Pour 2016, aressy vous souhaite de belles transformations,
+en toute sincérité,<br/><br/>
+		</div>
+       <!-- <div class="text" id="text_8" style="width:100%; max-width:1024px; color:#ffffff; ">
+			Aressy, l’Agence des transformations B to B.
+        </div>-->
+       </div>
+    </div>
+    
+    <div title="Error message area" id="errorMsg" style="color:Red;"></div>  
+    </body>
+</html>
